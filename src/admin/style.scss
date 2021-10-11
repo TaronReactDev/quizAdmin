@@ -1,0 +1,83 @@
+body{
+  margin: 0;
+  padding: 0;
+  max-height: 100vh;
+  max-width: 100vw;
+  height: 100%;
+  width: 100%;
+  background-color: coral;
+  color: black;
+}
+
+.adminContainer{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  grid-template-rows: 150px 1fr;
+  justify-content: center;
+}
+
+.adminMenu{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid black;
+}
+
+.dashboardContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.dashboardTable{
+  width: 100%;
+   border: 1px solid black;
+  margin: 10px;
+  tr{
+    border: 1px solid black;
+    th{
+      border: 1px solid black;
+    }
+  }
+
+
+}
+
+.modalContainer{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+  .modalContainer_background{
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.5;
+  }
+
+  .modalContainer_formContainer{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+     form{
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+    button{
+      margin: 5px;
+    }
+  }
+
+}
