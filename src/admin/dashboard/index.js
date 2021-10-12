@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import Modal from "./modal"
 import axios from "axios"
+import UniqueQuestion from "./uniqueQuestion"
 
 const Index = (props) => {
   const [openModal, setOpenModal] = useState("none");
   const [editModal, setEditModal] = useState(false);
-  const [questionInfo, setQuestionInfo] = useState()
+  const [questionInfo, setQuestionInfo] = useState([])
 
 
   useEffect(() => {
@@ -13,15 +14,45 @@ const Index = (props) => {
       try {
         const res = await axios.get('/api/post/list');
         const data = await res.data;
-        setQuestionInfo(data)
+        setQuestionInfo( data)
       } catch (e) {
         console.error(e);
       }
     }
     getData();
-
-
   }, [])
+
+  const handleFormSubmitAdding = async (data) => {
+
+    const {question, answers, correctAnswer} = data;
+    try {
+      const res = await axios.post("/api/post",
+          [{
+            question,
+            answers,
+            correctAnswer
+          }
+          ]
+      )
+      const resData = res.data;
+
+      if(resData.message === "Successfully created"){
+
+        setQuestionInfo( data)
+      }
+
+    } catch (e) {
+      console.error('request failed', {
+        error: e, data: {
+          question,
+          answers,
+          correctAnswer,
+        }
+      })
+    }
+
+  }
+
 
 
   const handleOpenModal = () => {
@@ -32,6 +63,11 @@ const Index = (props) => {
     setOpenModal("none")
   }
 
+
+const uniqueQuestion = questionInfo.map((el, index) => {
+  return   <UniqueQuestion key={el._id} index={index} question={el.question} answers={el.answers}/>
+
+})
 
   return (
     <div className="dashboardContainer">
@@ -50,11 +86,12 @@ const Index = (props) => {
           <th> Action</th>
         </tr>
 
+        {uniqueQuestion}
 
       </table>
 
 
-      <Modal display={openModal} handleCancelAdding={handleCancelAdding} editModal={editModal}/>
+      <Modal display={openModal} handleCancelAdding={handleCancelAdding} editModal={editModal} handleFormSubmitAdding={handleFormSubmitAdding}/>
     </div>
   );
 }

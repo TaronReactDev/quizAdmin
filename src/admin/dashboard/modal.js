@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import "../style.scss"
 
-const Modal = ({display, handleCancelAdding, editModal}) => {
+const Modal = ({display, handleCancelAdding, editModal,  handleFormSubmitAdding}) => {
 
-  const [question, setQuestion] = useState();
+  const [question, setQuestion] = useState("");
   const [answer1, setAnswer1] = useState({
     answer: "",
     isChecked: false,
@@ -97,6 +97,13 @@ const Modal = ({display, handleCancelAdding, editModal}) => {
       answers,
       correctAnswer,
     }
+
+    if(question && answers && correctAnswer){
+      console.log(questionForSubmit)
+      handleFormSubmitAdding(questionForSubmit)
+    }
+
+
   }
 
   const handleCancelBtn = () => {
