@@ -1,18 +1,22 @@
 import React from 'react';
 import "../style.scss"
 
-const UniqueQuestion = ({index, question, answers}) => {
+const UniqueQuestion = ({id, question, answers, correctAnswer, handleEdit, handleDelete,handleView }) => {
 
      const answersMap = answers.join(",")
 
     return (
-        <tr>
+        <tr onClick={handleView(id)}>
             <td className="uniqueQuestionItem" >  <input type="checkbox"/> </td>
-            <td className="uniqueQuestionItem" >{index +1 }</td>
+            <td className="uniqueQuestionItem" >{id}</td>
             <td className="uniqueQuestionItem">{question}</td>
             <td className="uniqueQuestionItem">{answersMap}</td>
-            <td className="uniqueQuestionItem">{answersMap}</td>
-            <td>hg</td>
+            <td className="uniqueQuestionItem">{correctAnswer}</td>
+            <td>
+                <button onClick={handleEdit(id)}>edit</button>
+                <button onClick={handleDelete}>del</button>
+
+            </td>
 
 
         </tr>
