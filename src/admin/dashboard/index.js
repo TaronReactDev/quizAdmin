@@ -5,17 +5,19 @@ import UniqueQuestion from "./uniqueQuestion"
 
 const Index = (props) => {
     const [openModal, setOpenModal] = useState("none");
+
+
     const [editModal, setEditModal] = useState("");
     const [viewModal, setViewModal] = useState("");
     const [questionInfo, setQuestionInfo] = useState([])
-    const [editedQuestion, setEditedQuestion] =useState([])
-    const [viewOneQuestion, setViewOneQuestion] =useState([])
+    const [editedQuestion, setEditedQuestion] = useState([])
+    const [viewOneQuestion, setViewOneQuestion] = useState([])
 
-
+//*
     useEffect(() => {
         const getData = async () => {
             try {
-                const res = await axios.get('/api/post/list');
+                const res = await axios.get('/api/question/list');
                 const data = await res.data;
                 setQuestionInfo(data)
             } catch (e) {
@@ -24,93 +26,138 @@ const Index = (props) => {
         }
         getData();
     }, [])
+//*
+//*
+    const handleDelete = (id) => () => {
+        axios.delete(`/api/question/list/delete/${id}`).then(res => {
+                if (res.status < 300) {
+                    let filteredQuestion = questionInfo.filter((el) => {
+                        return el._id !== id;
+                    })
+                    setQuestionInfo(filteredQuestion)
+                }
+            }
+        ).catch((e) => {
+            console.log('request failed')
+        })
+    }
+//*
+
+
+
+
+
 
     const handleFormSubmitAdding = async (data) => {
 
-        const {question, answers, correctAnswer} = data;
+
+
         try {
-            const res = await axios.post("/api/post",
-                [{
-                    question,
-                    answers,
-                    correctAnswer
-                }
-                ]
+            const res = await axios.post("/api/question/addQuestion",
+                data
             )
-            const resData = res.data;
+            console.log(res.data, "asdasd")
 
-            if (resData.message === "Successfully created") {
-
-                setQuestionInfo(data)
-            }
+             const resData = res.data;
+            setQuestionInfo(resData)
+             //
+             // if (resData.message === "Successfully created") {
+             //
+             //     setQuestionInfo((prev)=> { return [...prev, data] })
+             // }
 
         } catch (e) {
             console.error('request failed', {
                 error: e, data: {
-                    question,
-                    answers,
-                    correctAnswer,
+                    data
                 }
             })
         }
 
     }
 
-    const handleEditQuestionRequest = async  (data) =>{
+    console.log("setquestionInfo", questionInfo)
+
+
+
+
+
+
+    const handleEditQuestionRequest = async (data, id) => {
         console.log("data", data)
+
+        let edit = await axios.put(``, {
+            data
+        }).then(res => console.log(res)).catch(e => console.log(e))
+
+
     }
 
+
+//*
     const handleOpenModal = () => {
         setOpenModal("flex")
     }
-
+//*
+    //*
     const handleCancelAdding = () => {
         setOpenModal("none")
         setEditModal("")
+        setViewModal("")
         setEditedQuestion([])
         setViewOneQuestion([])
     }
+//*
 
-    const handleEdit = (id) =>() => {
+//*
+    const handleEdit = (id) => () => {
         setOpenModal("flex");
         setEditModal(id);
-        const edited = questionInfo.filter((el)=>{return el._id == id});
+        const edited = questionInfo.filter((el) => {
+            return el._id == id
+        });
         setEditedQuestion(edited)
-
-
     }
-
-    const handleView =(id)=>()=>{
+    console.log("EditedQuestion Mek harci edit", editedQuestion)
+//*
+    //*
+    const handleView = (id) => () => {
         setOpenModal("flex");
         setViewModal(id);
-        const viewOne = questionInfo.filter((el)=>{return el._id == id});
+        const viewOne = questionInfo.filter((el) => {
+            return el._id == id
+        });
         setViewOneQuestion(viewOne)
-    }
 
-    console.log("viewOneQuestion, " , viewOneQuestion)
-
-    const handleDelete = () => {
     }
+    console.log("viewOneQuestion Mek harci view", viewOneQuestion)
+    //*
+
 
     const uniqueQuestion = questionInfo.map((el, index) => {
         return <UniqueQuestion key={el._id} id={el._id} question={el.question} answers={el.answers}
                                correctAnswer={el.correctAnswer}
                                handleEdit={handleEdit}
                                handleDelete={handleDelete}
-                               handleView={handleView}/>
+                               handleView={handleView}
+        />
 
     })
 
     return (
         <div className="dashboardContainer">
             <div className="dashboardContainer_navigation">
-                <button onClick={handleOpenModal}> + add new question</button>
-                <button> delete bulk</button>
+                <button
+
+                    onClick={handleOpenModal}
+
+                > + add new question
+                </button>
+                {/*// <button> delete bulk</button>*/}
             </div>
 
             <table className="dashboardTable">
                 <tr>
-                    <th><input type="checkbox"/> select all</th>
                     <th> ID</th>
                     <th> Question</th>
                     <th> Answers</th>
@@ -123,12 +170,18 @@ const Index = (props) => {
             </table>
 
 
-            <Modal display={openModal} handleCancelAdding={handleCancelAdding} editModal={editModal}
-                   viewModal={{viewModal}}
+            <Modal display={openModal}
+                   viewModal={viewModal}
+                   editModal={editModal}
+                   handleCancelAdding={handleCancelAdding}
+
+
                    handleFormSubmitAdding={handleFormSubmitAdding}
                    editedQuestion={editedQuestion}
                    viewOneQuestion={viewOneQuestion}
-                   handleEditQuestionRequest={handleEditQuestionRequest}/>
+                   handleEditQuestionRequest={handleEditQuestionRequest}
+                   handleDelete={handleDelete}
+            />
         </div>
     );
 }

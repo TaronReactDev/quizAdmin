@@ -3,26 +3,37 @@ import "../style.scss"
 import ModalItem from "./modalItem";
 
 
-const Modal = ({display, handleCancelAdding, editModal, viewModal, handleFormSubmitAdding, editedQuestion,handleEditQuestionRequest, viewOneQuestion}) => {
+ const Modal = ({display
+ , handleCancelAdding, editModal, viewModal, handleFormSubmitAdding, editedQuestion,handleEditQuestionRequest, viewOneQuestion, handleDelete
+}) => {
 
     const [question, setQuestion] = useState("");
     const [answers, setAnswers] = useState(["", "", "", ""]);
     const [correctAnswer, setCorrectAnswer] = useState("");
 
+    const a =viewOneQuestion[0]
+
+     console.log(question)
+     console.log(answers)
+     console.log(correctAnswer)
+
     useEffect(()=>{
-        if(editModal){
+        if(editModal ){
             setQuestion(editedQuestion[0].question)
             setAnswers(editedQuestion[0].answers)
             setCorrectAnswer(editedQuestion[0].correctAnswer)
         }
     },[editModal])
 
+
     useEffect(()=>{
-        if(viewModal){
+
+         if(viewModal && viewOneQuestion.length){
+
             setQuestion(viewOneQuestion[0].question)
-            setAnswers(viewOneQuestion[0].answers)
-            setCorrectAnswer(viewOneQuestion[0].correctAnswer)
-        }
+             setAnswers(viewOneQuestion[0].answers)
+             setCorrectAnswer(viewOneQuestion[0].correctAnswer)
+         }
     },[viewModal])
 
     const clearState = () => {
@@ -55,10 +66,15 @@ const Modal = ({display, handleCancelAdding, editModal, viewModal, handleFormSub
             answers,
             correctAnswer
         }
+
+
+        console.log(newQuestion, "newQuestion")
         if(editModal){
-            handleEditQuestionRequest(newQuestion)
+            handleEditQuestionRequest(newQuestion, viewModal)
         }
         else {handleFormSubmitAdding(newQuestion)}
+
+
     }
 
     const handleCancelBtn = () => {
@@ -72,8 +88,8 @@ const Modal = ({display, handleCancelAdding, editModal, viewModal, handleFormSub
     const inputs = answers.map(
         (el, index) =>
             <ModalItem index={index}
-                       handleInputChangeAnswer={handleInputChangeAnswer}
-                       handleRadioBtn={handleRadioBtn}
+                      handleInputChangeAnswer={handleInputChangeAnswer}
+                      handleRadioBtn={handleRadioBtn}
                        value={answers}
                        editModal={editModal} viewModal={viewModal}
             />)
@@ -84,36 +100,47 @@ const Modal = ({display, handleCancelAdding, editModal, viewModal, handleFormSub
             <div className="modalContainer_background"></div>
 
             <div className="modalContainer_formContainer">
-                <form onSubmit={handleFormSubmit}>
+                <form
+                    onSubmit={handleFormSubmit}
+                >
 
                     <label htmlFor="question">Question</label>
                     {editModal ? <input type="text" id="question"
                                         value={question}
-                                        onChange={handleInputChange}/> :
+                                        onChange={handleInputChange}
+                        /> :
                         viewModal ? <p>{question}</p> :
 
-                        <input type="text" id="question" value={question} onChange={handleInputChange}/>}
+                        <input type="text" id="question" value={question}
+                               onChange={handleInputChange}
+                        />}
 
                     {inputs}
 
                 </form>
 
-                {editModal ? "" :
-                    <button onClick={handleFormSubmit}>Add new question</button>}
+                {editModal || viewModal ? "" :
+                    <button
+                        onClick={handleFormSubmit}
+                    >Add new question</button>}
 
 
                 {editModal ? <>
-                        <button> Add Edited question</button>
-                        <button>Delete</button>
+                        <button
+                            onClick={handleFormSubmit}
+                        > Add Edited question</button>
+                        <button onClick={handleDelete(editModal)}>Delete</button>
                     </>
                     :
                   viewModal ? <>
                           <button> Edit question</button>
-                          <button>Delete</button>
+                          <button onClick={handleDelete(viewModal)}>Delete</button>
                       </>
                       :""
                 }
-                <button onClick={handleCancelBtn}> Cancel</button>
+                <button
+                    onClick={handleCancelBtn}
+                > Cancel</button>
             </div>
         </div>
     );

@@ -19,11 +19,9 @@ body{
 }
 
 .adminMenu{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid black;
+  display: grid;
+  justify-content: center;
+   border: 1px solid black;
 }
 
 .dashboardContainer{
@@ -32,14 +30,21 @@ body{
   justify-content: center;
   align-items: center;
   margin-top: 50px;
+  position: relative;
 
 
 }
 
+.dashboardContainer_navigation{
+  width: 100%;
+  height: 100px;
+  position: absolute;
+}
 .dashboardTable{
   width: 100%;
    border: 1px solid black;
-  margin: 10px;
+  position: absolute;
+  top: 50px;
   tr{
     border: 1px solid black;
     th{
@@ -60,14 +65,16 @@ body{
   top: 0;
   left: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: black;
+  //justify-content: center;
+  //align-items: center;
+
 
 
   .modalContainer_background{
     width: 100%;
     height: 100%;
-    background-color: black;
+
     opacity: 0.5;
   }
 
@@ -75,6 +82,7 @@ body{
     position: absolute;
     display: flex;
     flex-direction: column;
+    background-color: antiquewhite;
      form{
       display: flex;
       flex-direction: column;
