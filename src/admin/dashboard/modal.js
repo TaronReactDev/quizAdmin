@@ -4,7 +4,7 @@ import ModalItem from "./modalItem";
 
 
  const Modal = ({display
- , handleCancelAdding, editModal, viewModal, handleFormSubmitAdding, editedQuestion,handleEditQuestionRequest, viewOneQuestion, handleDelete
+ , handleCancelAdding, editModal, viewModal, handleFormSubmitAdding, editedQuestion,handleEditQuestionRequest, viewOneQuestion, handleDelete,handleEditFromViewModal
 }) => {
 
     const [question, setQuestion] = useState("");
@@ -13,9 +13,6 @@ import ModalItem from "./modalItem";
 
     const a =viewOneQuestion[0]
 
-     console.log(question)
-     console.log(answers)
-     console.log(correctAnswer)
 
     useEffect(()=>{
         if(editModal ){
@@ -66,20 +63,22 @@ import ModalItem from "./modalItem";
             answers,
             correctAnswer
         }
-
-
-        console.log(newQuestion, "newQuestion")
-        if(editModal){
-            handleEditQuestionRequest(newQuestion, viewModal)
-        }
-        else {handleFormSubmitAdding(newQuestion)}
-
-
+            handleFormSubmitAdding(newQuestion)
     }
 
     const handleCancelBtn = () => {
         clearState()
         handleCancelAdding()
+    }
+
+    const handleEditQuestionRequestModal = (id) =>(e)=>{
+         e.preventDefault()
+         const editedQuestion = {
+             question,
+             answers,
+             correctAnswer
+         }
+         handleEditQuestionRequest(editedQuestion,id)
     }
 
 
@@ -92,24 +91,27 @@ import ModalItem from "./modalItem";
                       handleRadioBtn={handleRadioBtn}
                        value={answers}
                        editModal={editModal} viewModal={viewModal}
+                       correctAnswer={correctAnswer}
             />)
 
 
     return (
         <div className="modalContainer" style={{display}}>
-            <div className="modalContainer_background"></div>
+            <div className="modalContainer_background" onClick={
+                handleCancelBtn
+            }></div>
 
             <div className="modalContainer_formContainer">
                 <form
-                    onSubmit={handleFormSubmit}
+                    onSubmit={editModal ?  handleEditQuestionRequestModal(editModal) : handleFormSubmit}
                 >
 
-                    <label htmlFor="question">Question</label>
+                    <label htmlFor="question" className="modalContainer_view">Question</label>
                     {editModal ? <input type="text" id="question"
                                         value={question}
                                         onChange={handleInputChange}
                         /> :
-                        viewModal ? <p>{question}</p> :
+                        viewModal ? <span className="modalContainer_view">{question}</span> :
 
                         <input type="text" id="question" value={question}
                                onChange={handleInputChange}
@@ -127,13 +129,13 @@ import ModalItem from "./modalItem";
 
                 {editModal ? <>
                         <button
-                            onClick={handleFormSubmit}
+                            onClick={handleEditQuestionRequestModal(editModal)}
                         > Add Edited question</button>
                         <button onClick={handleDelete(editModal)}>Delete</button>
                     </>
                     :
                   viewModal ? <>
-                          <button> Edit question</button>
+                          <button onClick={handleEditFromViewModal(viewModal)}> Edit question</button>
                           <button onClick={handleDelete(viewModal)}>Delete</button>
                       </>
                       :""

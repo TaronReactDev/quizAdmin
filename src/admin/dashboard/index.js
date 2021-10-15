@@ -40,31 +40,27 @@ const Index = (props) => {
         ).catch((e) => {
             console.log('request failed')
         })
+        setOpenModal("none")
     }
 //*
 
-
-
-
-
-
     const handleFormSubmitAdding = async (data) => {
 
-
-
+        const {question, answers, correctAnswer} = data;
         try {
             const res = await axios.post("/api/question/addQuestion",
-                data
-            )
-            console.log(res.data, "asdasd")
+                {
+                    question, answers, correctAnswer
+                })
 
-             const resData = res.data;
+
+            const resData = res.data;
             setQuestionInfo(resData)
-             //
-             // if (resData.message === "Successfully created") {
-             //
-             //     setQuestionInfo((prev)=> { return [...prev, data] })
-             // }
+            //
+            // if (resData.message === "Successfully created") {
+            //
+            //     setQuestionInfo((prev)=> { return [...prev, data] })
+            // }
 
         } catch (e) {
             console.error('request failed', {
@@ -74,21 +70,31 @@ const Index = (props) => {
             })
         }
 
+
+        setOpenModal("none")
+        setEditModal("")
+        setViewModal("")
+        setEditedQuestion([])
+        setViewOneQuestion([])
+
     }
 
-    console.log("setquestionInfo", questionInfo)
+    const handleEditQuestionRequest = (data, id) => {
+        const {question, answers, correctAnswer} = data;
+        axios.put(`/api/question/list/edit/${id}`, {
+            id,
+            question,
+            answers,
+            correctAnswer
+
+        }).then(res => setQuestionInfo((prev)=>{return [...prev, res.data]})).catch(e => console.log(e))
 
 
-
-
-
-
-    const handleEditQuestionRequest = async (data, id) => {
-        console.log("data", data)
-
-        let edit = await axios.put(``, {
-            data
-        }).then(res => console.log(res)).catch(e => console.log(e))
+        setOpenModal("none")
+        setEditModal("")
+        setViewModal("")
+        setEditedQuestion([])
+        setViewOneQuestion([])
 
 
     }
@@ -118,7 +124,7 @@ const Index = (props) => {
         });
         setEditedQuestion(edited)
     }
-    console.log("EditedQuestion Mek harci edit", editedQuestion)
+
 //*
     //*
     const handleView = (id) => () => {
@@ -130,7 +136,7 @@ const Index = (props) => {
         setViewOneQuestion(viewOne)
 
     }
-    console.log("viewOneQuestion Mek harci view", viewOneQuestion)
+
     //*
 
 
@@ -181,6 +187,8 @@ const Index = (props) => {
                    viewOneQuestion={viewOneQuestion}
                    handleEditQuestionRequest={handleEditQuestionRequest}
                    handleDelete={handleDelete}
+                   handleEditFromViewModal={handleEdit}
+
             />
         </div>
     );
