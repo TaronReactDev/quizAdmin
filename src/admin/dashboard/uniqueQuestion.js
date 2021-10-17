@@ -1,5 +1,7 @@
 import React from 'react';
 import "../style.scss"
+import DeleteBtn from "./shared buttons/deleteBtn";
+import EditBtn from "./shared buttons/editBtn";
 
 const UniqueQuestion = ({id, el,handleViewOrEdit, handleDelete}) => {
 
@@ -13,15 +15,9 @@ const UniqueQuestion = ({id, el,handleViewOrEdit, handleDelete}) => {
       <td className="uniqueQuestionItem" onClick={handleViewOrEdit(id, "view")}>{answersMap}</td>
       <td className="uniqueQuestionItem" onClick={handleViewOrEdit(id, "view")}>{correctAnswer}</td>
       <td>
-        <button
-          onClick={handleViewOrEdit(id, "edit")}
-        >edit
-        </button>
-        <button
-          onClick={handleDelete(id)}
-        >del
-        </button>
-      </td>
+        <EditBtn text="edit" id={id} handleViewOrEdit={handleViewOrEdit} type="edit"/>
+         <DeleteBtn text="Del" handleDelete={handleDelete} id={id}/>
+        </td>
     </tr>
   );
 }

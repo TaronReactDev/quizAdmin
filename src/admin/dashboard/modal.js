@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import "../style.scss"
 import ModalItem from "./modalItem";
+import CancelBtn from "./shared buttons/cancelBtn";
+import DeleteBtn from "./shared buttons/deleteBtn";
+import EditBtn from "./shared buttons/editBtn";
 
 
  const Modal = ({display, id
- , handleCancelAdding, handleFormSubmitAdding, editedQuestion, handleEditQuestionRequest, viewOneQuestion, handleDelete,handleEditFromViewModal
+ , handleCancelAdding, handleFormSubmitAdding, editedQuestion, handleEditQuestionRequest, viewOneQuestion, handleDelete,handleViewOrEdit
 }) => {
 
     const [question, setQuestion] = useState("");
@@ -131,18 +134,18 @@ import ModalItem from "./modalItem";
                         <button
                            // onClick={handleEditQuestionRequestModal(editModal)}
                         > Add Edited question</button>
-                        <button onClick={handleDelete(id)}>Delete</button>
-                    </>
+                    <DeleteBtn text="Delete" handleDelete={handleDelete} id={id}/>
+                  </>
                     :
                   viewOneQuestion ? <>
-                          <button onClick={handleEditFromViewModal(viewOneQuestion)}> Edit question</button>
-                          <button onClick={handleDelete(id)}>Delete</button>
+                          <EditBtn text="Edit question" id={id} type="edit" handleViewOrEdit={handleViewOrEdit}/>
+                          <DeleteBtn text="Delete" handleDelete={handleDelete} id={id}/>
                       </>
                       :""
                 }
-                <button
-                    onClick={handleCancelBtn}
-                > Cancel</button>
+
+              <CancelBtn text="Cancel" handleCancelBtn ={handleCancelBtn}/>
+
             </div>
         </div>
     );

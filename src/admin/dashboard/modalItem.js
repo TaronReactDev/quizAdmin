@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ModalItem= ({index, handleInputChangeAnswer, handleRadioBtn, edit, view, value,viewModal, editModal,correctAnswer})=> {
+const ModalItem= ({index, handleInputChangeAnswer, handleRadioBtn, edit, view, value,correctAnswer})=> {
 
     return (
         <>

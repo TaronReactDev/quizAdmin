@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Modal from "./modal"
 import axios from "axios"
 import UniqueQuestion from "./uniqueQuestion"
+import DashboardHeaders from "./dashboardHeaders";
 
 const Index = (props) => {
   const [openModal, setOpenModal] = useState("none");
@@ -45,17 +46,9 @@ const Index = (props) => {
         {
           question, answers, correctAnswer
         })
-
-
       const resData = res.data;
       setQuestionInfo(resData)
-      //
-      // if (resData.message === "Successfully created") {
-      //
-      //     setQuestionInfo((prev)=> { return [...prev, data] })
-      // }
-
-    } catch (e) {
+        } catch (e) {
       console.error('request failed', {
         error: e, data: {
           data
@@ -63,12 +56,7 @@ const Index = (props) => {
       })
     }
 
-
-    setOpenModal("none")
-    //setEditOrViewId("")
-    setEditedQuestion([])
-    setViewOneQuestion([])
-
+    handleCancelAdding()
   }
   const handleEditQuestionRequest = (data, id) => {
     const {question, answers, correctAnswer} = data;
@@ -82,13 +70,7 @@ const Index = (props) => {
       return [...prev, res.data]
     })).catch(e => console.log(e))
 
-
-    setOpenModal("none")
-    // setEditOrViewId("")
-    setEditedQuestion([])
-    setViewOneQuestion([])
-
-
+    handleCancelAdding()
   }
 
 
@@ -97,17 +79,19 @@ const Index = (props) => {
   }
   const handleCancelAdding = () => {
     setOpenModal("none")
-    // setEditOrViewId("")
+    setEditOrViewId("")
     setEditedQuestion([])
     setViewOneQuestion([])
   }
   const handleViewOrEdit = (id, actionType) => () => {
-    setOpenModal("flex");
+
     setEditOrViewId(id);
     const filteredQuestion = questionInfo.filter((el) => {
       return el._id == id
     });
     actionType === "edit" ? setEditedQuestion(filteredQuestion) : setViewOneQuestion(filteredQuestion)
+
+    setOpenModal("flex");
   }
 
 
@@ -124,13 +108,7 @@ const Index = (props) => {
         <button onClick={handleOpenModal}> + add new question</button>
       </div>
       <table className="dashboardTable">
-        <tr>
-          <th> ID</th>
-          <th> Question</th>
-          <th> Answers</th>
-          <th> Correct answer</th>
-          <th> Action</th>
-        </tr>
+       <DashboardHeaders/>
         {uniqueQuestion}
       </table>
       <Modal display={openModal}
@@ -142,7 +120,7 @@ const Index = (props) => {
              viewOneQuestion={viewOneQuestion}
              handleEditQuestionRequest={handleEditQuestionRequest}
              handleDelete={handleDelete}
-        //  handleEditFromViewModal={handleEdit}
+          handleViewOrEdit={handleViewOrEdit}
       />
     </div>
   );
