@@ -3,40 +3,40 @@ import "../style.scss"
 import ModalItem from "./modalItem";
 
 
- const Modal = ({display
- , handleCancelAdding, editModal, viewModal, handleFormSubmitAdding, editedQuestion,handleEditQuestionRequest, viewOneQuestion, handleDelete,handleEditFromViewModal
+ const Modal = ({display, id
+ , handleCancelAdding, handleFormSubmitAdding, editedQuestion, handleEditQuestionRequest, viewOneQuestion, handleDelete,handleEditFromViewModal
 }) => {
 
     const [question, setQuestion] = useState("");
     const [answers, setAnswers] = useState(["", "", "", ""]);
-    const [correctAnswer, setCorrectAnswer] = useState("");
+    const [correctAnswer, setCorrectAnswer] = useState();
 
     const a =viewOneQuestion[0]
 
 
     useEffect(()=>{
-        if(editModal ){
+        if(editedQuestion ){
             setQuestion(editedQuestion[0].question)
             setAnswers(editedQuestion[0].answers)
             setCorrectAnswer(editedQuestion[0].correctAnswer)
         }
-    },[editModal])
+    },[editedQuestion])
 
 
     useEffect(()=>{
 
-         if(viewModal && viewOneQuestion.length){
+         if(viewOneQuestion && viewOneQuestion.length){
 
             setQuestion(viewOneQuestion[0].question)
              setAnswers(viewOneQuestion[0].answers)
              setCorrectAnswer(viewOneQuestion[0].correctAnswer)
          }
-    },[viewModal])
+    },[viewOneQuestion])
 
     const clearState = () => {
         setQuestion("");
         setAnswers(["", "", "", ""]);
-        setCorrectAnswer('')
+        setCorrectAnswer()
     }
 
     const handleInputChange = (e) => {
@@ -82,16 +82,16 @@ import ModalItem from "./modalItem";
     }
 
 
-
-
     const inputs = answers.map(
         (el, index) =>
             <ModalItem index={index}
                       handleInputChangeAnswer={handleInputChangeAnswer}
                       handleRadioBtn={handleRadioBtn}
                        value={answers}
-                       editModal={editModal} viewModal={viewModal}
+                      // editModal={editModal} viewModal={viewModal}
                        correctAnswer={correctAnswer}
+                       edit={!!editedQuestion}
+                       view={!!viewOneQuestion}
             />)
 
 
@@ -99,19 +99,19 @@ import ModalItem from "./modalItem";
         <div className="modalContainer" style={{display}}>
             <div className="modalContainer_background" onClick={
                 handleCancelBtn
-            }></div>
+            }> </div>
 
             <div className="modalContainer_formContainer">
                 <form
-                    onSubmit={editModal ?  handleEditQuestionRequestModal(editModal) : handleFormSubmit}
+                    onSubmit={editedQuestion ?  handleEditQuestionRequestModal(editedQuestion) : handleFormSubmit}
                 >
 
                     <label htmlFor="question" className="modalContainer_view">Question</label>
-                    {editModal ? <input type="text" id="question"
+                    {editedQuestion ? <input type="text" id="question"
                                         value={question}
                                         onChange={handleInputChange}
                         /> :
-                        viewModal ? <span className="modalContainer_view">{question}</span> :
+                      viewOneQuestion ? <span className="modalContainer_view">{question}</span> :
 
                         <input type="text" id="question" value={question}
                                onChange={handleInputChange}
@@ -121,22 +121,22 @@ import ModalItem from "./modalItem";
 
                 </form>
 
-                {editModal || viewModal ? "" :
+                {editedQuestion || viewOneQuestion ? "" :
                     <button
                         onClick={handleFormSubmit}
                     >Add new question</button>}
 
 
-                {editModal ? <>
+                {editedQuestion ? <>
                         <button
-                            onClick={handleEditQuestionRequestModal(editModal)}
+                           // onClick={handleEditQuestionRequestModal(editModal)}
                         > Add Edited question</button>
-                        <button onClick={handleDelete(editModal)}>Delete</button>
+                        <button onClick={handleDelete(id)}>Delete</button>
                     </>
                     :
-                  viewModal ? <>
-                          <button onClick={handleEditFromViewModal(viewModal)}> Edit question</button>
-                          <button onClick={handleDelete(viewModal)}>Delete</button>
+                  viewOneQuestion ? <>
+                          <button onClick={handleEditFromViewModal(viewOneQuestion)}> Edit question</button>
+                          <button onClick={handleDelete(id)}>Delete</button>
                       </>
                       :""
                 }

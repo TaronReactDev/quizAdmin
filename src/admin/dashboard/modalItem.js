@@ -1,19 +1,17 @@
 import React from 'react';
 
-const ModalItem= ({index, handleInputChangeAnswer, handleRadioBtn, checked, value,viewModal, editModal,correctAnswer})=> {
-
+const ModalItem= ({index, handleInputChangeAnswer, handleRadioBtn, edit, view, value,viewModal, editModal,correctAnswer})=> {
 
     return (
         <>
             <label htmlFor={`answer+${index + 1}`} className="modalContainer_view">Answer {index+1}</label>
-
-
             {
-                editModal?  <div>
-                    <input type="radio" name={`answer}`} checked={ value[index] === correctAnswer ? true:false} onClick={handleRadioBtn(index)}/>
+              edit?  <div>
+                    <input type="radio" name={`answer}`} checked={ value[index] === correctAnswer ? true:false}
+                           onClick={handleRadioBtn(index)}/>
                     <input type="text" id={`answer+${index + 1}`} value={value[index]} onChange={ handleInputChangeAnswer(index)}/>
                 </div> :
-                    viewModal?  <div>
+                view?  <div>
                     <input type="radio" name={`answer}`} checked={ value[index] === correctAnswer ? true:false}  onClick={handleRadioBtn(index)}/>
                     <span className="modalContainer_view" > {value[index]} </span>
                 </div> :
@@ -22,7 +20,6 @@ const ModalItem= ({index, handleInputChangeAnswer, handleRadioBtn, checked, valu
                         <input type="text" id={`answer+${index + 1}`} value={value[index]} onChange={ handleInputChangeAnswer(index)}/>
                     </div>
             }
-
         </>
     );
 }
