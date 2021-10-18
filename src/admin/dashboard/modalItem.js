@@ -11,10 +11,7 @@ const ModalItem= ({index, handleInputChangeAnswer, handleRadioBtn, edit, view, v
                            onClick={handleRadioBtn(index)}/>
                     <input type="text" id={`answer+${index + 1}`} value={value[index]} onChange={ handleInputChangeAnswer(index)}/>
                 </div> :
-                view?  <div>
-                    <input type="radio" name={`answer}`} checked={ value[index] == correctAnswer ? true:false}  onClick={handleRadioBtn(index)}/>
-                    <span className="modalContainer_view" > {value[index]} </span>
-                </div> :""
+                view? "" :""
 
             }
         </>

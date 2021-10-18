@@ -2,13 +2,13 @@ import React from 'react';
 
 
 const Modal = ({modalShow, children}) => {
-
+    console.log(modalShow)
     if (!modalShow) {
         return null
     } else {
         return (
 
-            <div>   {children} </div>
+            <>   {children} </>
 
 
         );
