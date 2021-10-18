@@ -3,10 +3,11 @@ import "../style.scss"
 import DeleteBtn from "./shared buttons/deleteBtn";
 import EditBtn from "./shared buttons/editBtn";
 
-const UniqueQuestion = ({id, el,handleViewOrEdit, handleDelete}) => {
+const UniqueQuestion = ({id, el, handleViewOrEdit, handleDelete}) => {
 
-  const {question, answers, correctAnswer} = el
-  const answersMap = answers.join(",")
+  const {question, answers, correctAnswer} = el;
+  const answersMap = answers?.join(",")
+
 
   return (
     <tr>
@@ -14,7 +15,7 @@ const UniqueQuestion = ({id, el,handleViewOrEdit, handleDelete}) => {
       <td className="uniqueQuestionItem" onClick={handleViewOrEdit(id, "view")}>{question}</td>
       <td className="uniqueQuestionItem" onClick={handleViewOrEdit(id, "view")}>{answersMap}</td>
       <td className="uniqueQuestionItem" onClick={handleViewOrEdit(id, "view")}>{correctAnswer}</td>
-      <td>
+      <td className="uniqueQuestionItemBtn">
         <EditBtn text="edit" id={id} handleViewOrEdit={handleViewOrEdit} type="edit"/>
          <DeleteBtn text="Del" handleDelete={handleDelete} id={id}/>
         </td>

@@ -1,10 +1,13 @@
 import React from 'react';
+import  Edit from "./png/edit.png"
+import "./../../style.scss"
+
 
 const EditBtn= ({text,handleViewOrEdit, id, type}) => {
   return (
     <button
       onClick={handleViewOrEdit(id, type)}
-    >{text}
+    > <img alt={text}  className="btnIcon" src={Edit} />
     </button>
   );
 }
