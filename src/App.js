@@ -1,8 +1,9 @@
 import Admin from "./admin/index"
+import Login from "./login/loginPage"
 
 function App() {
   return (
-    <Admin/>
+    <Login/>
   );
 }
 
